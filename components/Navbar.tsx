@@ -23,7 +23,7 @@ function Navbar() {
             </li>
             <li>
               <Link href={`/${username}`}>
-                <img src={user?.photoURL} alt={username} />
+                <img src={user?.photoURL} alt='' />
               </Link>
             </li>
           </>
