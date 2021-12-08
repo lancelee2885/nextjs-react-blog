@@ -1,9 +1,9 @@
 
 function UserPage() {
     return ( 
-        <div>
+        <main>
             Lance
-        </div>
+        </main>
      );
 }
 

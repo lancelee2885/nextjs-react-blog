@@ -1,20 +1,24 @@
 import { auth, googleAuthProvider } from '../lib/firebase';
+import Image from 'next/image';
+import { useContext } from "react";
+import UserContext from "../lib/context";
 
 export default function Enter(props) {
-  const user = null;
-  const username = null;
+
+  const { user, username } = useContext(UserContext);
+
 
   // 1. user signed out <SignInButton />
   // 2. user signed in, but missing username <UsernameForm />
   // 3. user signed in, has username <SignOutButton />
   return (
-    <div>
+    <main>
       {user ? 
         !username ? <UsernameForm /> : <SignOutButton /> 
         : 
         <SignInButton />
       }
-    </div>
+    </main>
   );
 }
 
@@ -26,7 +30,7 @@ function SignInButton() {
 
   return (
     <button className="btn-google" onClick={signInWithGoogle}>
-      <img src={'/google.png'} /> Sign in with Google
+      <img src='/google.png' alt='google logo' /> Sign in with Google
     </button>
   );
 }

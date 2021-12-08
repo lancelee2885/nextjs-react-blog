@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 
 export default function Home() {
   return (
-    <div>
+    <main>
       <Loader show={true} />
       <Link 
         prefetch={true}
@@ -18,6 +18,6 @@ export default function Home() {
         Lance's Profile
       </Link>
       <button onClick={() => toast.success('helle toast')}>Toast Me</button>
-    </div>
+    </main>
   )
 }
