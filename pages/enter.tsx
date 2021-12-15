@@ -70,8 +70,19 @@ function UsernameForm() {
     }
   }
 
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
+
+    // Create References for both user uid and username
+    const userDoc = firestore.doc(`users/${user.id}`);
+    const usernameDoc = firestore.doc(`username/${formData}`);
+
+    // Batch both of them at the same time. Either both success or faile
+    const batch = firestore.batch();
+    batch.set(userDoc, { username: formData, photoURL: user.photo.URL, displayName: user.displayName});
+    batch.set(usernameDoc, { uid: user.uid });
+
+    await batch.commit();
 
   }
 
