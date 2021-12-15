@@ -74,12 +74,12 @@ function UsernameForm() {
     evt.preventDefault();
 
     // Create References for both user uid and username
-    const userDoc = firestore.doc(`users/${user.id}`);
-    const usernameDoc = firestore.doc(`username/${formData}`);
+    const userDoc = firestore.doc(`users/${user.uid}`);
+    const usernameDoc = firestore.doc(`usernames/${formData}`);
 
     // Batch both of them at the same time. Either both success or faile
     const batch = firestore.batch();
-    batch.set(userDoc, { username: formData, photoURL: user.photo.URL, displayName: user.displayName});
+    batch.set(userDoc, { username: formData, photoURL: user.photoURL, displayName: user.displayName});
     batch.set(usernameDoc, { uid: user.uid });
 
     await batch.commit();
@@ -99,21 +99,34 @@ function UsernameForm() {
     []
   );
 
+  function UsernameMessage({ username, isValid, loading }){
+    if (loading) {
+      return <p>Checking...</p>
+    } else if (isValid) {
+      return <p className='text-success'>Username {username} is available!</p>
+    } else if (username && !isValid) {
+      return <p className='text-danger'> Username {username} is not available!</p>
+    } else {
+      return <p></p>
+    }
+  }
+
   return (
     !username && (
       <section>
         <h3>Choose Username</h3>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(evt) => handleSubmit(evt)}>
+          <UsernameMessage username={formData} isValid={isValid} loading={loading}/>
           <input
             type="username"
             placeholder="username"
             value={formData}
             onChange={handleChange}
           />
-        </form>
         <button type="submit" className="btn-grenn" disabled={!isValid}>
           Choose
         </button>
+        </form>
         <h3>Debug State</h3>
         <div>
           Username: {formData}
