@@ -20,3 +20,28 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
+/** 
+ * Returns a user information with username provided
+ * @param username 
+ */
+export async function getUserWithUsername(username) {
+  const userRef = firestore.collection('users');
+  const query = userRef.where('username', '==', username).limit(1);
+  const userDoc = (await query.get()).docs[0];
+  return userDoc;
+}
+
+/**
+ * Parse firebase document to JSON
+ * 
+ * @param {DocumentSnapshot} doc
+ */
+export function postToJson(doc) {
+  const data = doc.data();
+  return {
+    ...data,
+    createdAt: data.createdAt.toMillis(),
+    updatedAt: data.updatedAt.toMillis(),
+  }
+}
