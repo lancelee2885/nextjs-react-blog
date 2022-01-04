@@ -1,11 +1,12 @@
 import Link from "next/link";
 
 function PostFeed({ posts, admin }) {
-  return posts
+  return (posts
     ? posts.map((post) => (
         <PostItem post={post} key={post.slug} admin={admin} />
       ))
-    : null;
+    : null
+    )
 }
 
 export function PostItem({ post, admin }) {

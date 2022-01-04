@@ -1,8 +1,40 @@
+import PostFeed from "../../components/PostFeed";
+import UserProfile from "../../components/UserProfile";
+import { getUserWithUsername, postToJson } from "../../lib/firebase";
 
-function UserPage() {
+export async function getServerSideProps({ query }){
+    console.log('getServerSideProps exercuted in index of /username')
+
+    const { username } = query;
+    
+    const userDoc = await getUserWithUsername(username);
+
+    // JSON serialized Data
+    let user;
+    let posts;
+
+    if (userDoc) {
+        console.log('userDoc Retrived');
+        user = userDoc.data();
+        const postQuery = userDoc.ref
+            .collection('posts')
+            .where('published', '==', true)
+            .orderBy('createdAt', 'desc')
+            .limit(5);
+
+        posts = (await postQuery.get()).docs.map(postToJson);
+    }
+
+    return {
+        props: { user, posts },
+    };
+}
+
+function UserPage({user, posts}) {
     return ( 
         <main>
-            Lance
+            <UserProfile user={user} />
+            <PostFeed posts={posts} />
         </main>
      );
 }
