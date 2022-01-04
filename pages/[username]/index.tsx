@@ -3,8 +3,6 @@ import UserProfile from "../../components/UserProfile";
 import { getUserWithUsername, postToJson } from "../../lib/firebase";
 
 export async function getServerSideProps({ query }){
-    console.log('getServerSideProps exercuted in index of /username')
-
     const { username } = query;
     
     const userDoc = await getUserWithUsername(username);
@@ -14,7 +12,6 @@ export async function getServerSideProps({ query }){
     let posts;
 
     if (userDoc) {
-        console.log('userDoc Retrived');
         user = userDoc.data();
         const postQuery = userDoc.ref
             .collection('posts')
