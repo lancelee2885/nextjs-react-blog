@@ -1,3 +1,4 @@
+import styles from '../../styles/Post.module.css';
 import { firestore, getUserWithUsername, postToJson } from "../../lib/firebase";
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import PostContent from "../../components/PostContent";
@@ -78,7 +79,6 @@ export default function Post(props) {
         <p>
           <strong>{post.heartCount || 0} 🤍</strong>
         </p>
-
       </aside>
     </main>
     );
