@@ -1,8 +1,10 @@
+import Head from 'next/head';
+
 function AdminPostsPage({  }) {
     return ( 
-        <div>
-            
-        </div>
+        <main>
+
+        </main>
      );
 }
 

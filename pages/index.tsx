@@ -8,7 +8,7 @@ import { useState } from "react";
 import PostFeed from "../components/PostFeed";
 
 // Most post to query per page;
-const Limit = 1;
+const Limit = 5;
 
 export async function getServerSideProps() {
   const postQuery = firestore
