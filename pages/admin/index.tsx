@@ -94,7 +94,7 @@ function CreateNewPost() {
           className={styles.input}
         />
         <p>
-          <strong>slug: {slug} </strong> <strong className="text-danger"> {dupSlug ? '*Duplicated Title*' : null}</strong>
+          <strong>slug: {slug} </strong> <strong className="text-danger"> {dupSlug ? '*Duplicated Slug*' : null}</strong>
         </p>
         <button type="submit" disabled={!isValid || dupSlug} className="btn-green">
           Create New Post
