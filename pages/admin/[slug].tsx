@@ -1,4 +1,5 @@
 import styles from "../../styles/Admin.module.css";
+import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
@@ -37,13 +38,21 @@ function PostManager() {
           <section>
             <h1>{post.title}</h1>
             <p>ID: {post.slug}</p>
-
             <PostForm
               postRef={postRef}
               defaultValues={post}
               preview={preview}
             />
           </section>
+          <aside>
+            <h3>Tools</h3>
+            <button onClick={() => setPreview(!preview)}>
+              {preview ? "Edit" : "Preview"}
+            </button>
+            <Link href={`/${post.username}/${post.slug}`}>
+              <button className="btn-blue">Live view</button>
+            </Link>
+          </aside>
         </>
       )}
     </main>
@@ -76,7 +85,7 @@ function PostForm({ postRef, defaultValues, preview }) {
       )}
 
       <div className={preview ? styles.hidden : styles.controls}>
-        <textarea name="content" {...register('content')}></textarea>
+        <textarea name="content" {...register("content")}></textarea>
         <fieldset>
           <label htmlFor="published">Published</label>
           <input
@@ -84,7 +93,7 @@ function PostForm({ postRef, defaultValues, preview }) {
             type="checkbox"
             className={styles.checkbox}
             name="published"
-            {...register('published')}
+            {...register("published")}
           />
         </fieldset>
 
