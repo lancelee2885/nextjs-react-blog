@@ -47,6 +47,14 @@ function CreateNewPost() {
 
   const slug = encodeURI(kebabCase(title));
 
+  const ref = firestore
+  .collection("users")
+  .doc(auth.currentUser.uid)
+  .collection("posts");
+  const [querySnapshot] = useCollection(ref);
+  const posts = querySnapshot?.docs.map((doc) => doc.data()?.slug);
+  
+  const dupSlug = posts?.includes(slug);
   const isValid = title.length > 3 && title.length < 100;
 
   async function createPost(e) {
@@ -86,9 +94,9 @@ function CreateNewPost() {
           className={styles.input}
         />
         <p>
-          <strong>slug: {slug}</strong>
+          <strong>slug: {slug} </strong> <strong className="text-danger"> {dupSlug ? '*Duplicated Title*' : null}</strong>
         </p>
-        <button type="submit" disabled={!isValid} className="btn-green">
+        <button type="submit" disabled={!isValid || dupSlug} className="btn-green">
           Create New Post
         </button>
       </form>
