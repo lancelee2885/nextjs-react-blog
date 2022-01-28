@@ -4,7 +4,7 @@ import Loader from "./Loader";
 
 function ImageUploader() {
   const [uploading, setUploading] = useState(false);
-  const [progress, setProgess] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [downloadURL, setDownLoadURL] = useState(null);
 
   async function uploadFile(e) {
@@ -27,6 +27,8 @@ function ImageUploader() {
         (snapshot.bytesTransferred / snapshot.totalBytes) *
         100
       ).toFixed(0);
+      setProgress(pct);
+      
 
       // get downloadURL after task resolves (note: this is not a native promise, async/await does not work here)
       task
