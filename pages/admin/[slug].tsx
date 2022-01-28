@@ -88,19 +88,8 @@ function PostForm({ postRef, defaultValues, preview }) {
       )}
 
       <div className={preview ? styles.hidden : styles.controls}>
-<<<<<<< HEAD
         <ImageUploader />
         <textarea name="content" {...register("content")}></textarea>
-=======
-        <textarea name="content" {...register("content",{
-          maxLength: { value: 20000, message: 'content is too long.'},
-          minLength: { value: 10, message: 'content is too short.'},
-          required: {value: true, message: 'content is required'}
-        })}></textarea>
-
-        {errors.content && <p className='text-danger'>{errors.content.message}</p>}
-
->>>>>>> 13c83e0302471dcf1dc6631e5898c46517ec5da6
         <fieldset>
           <label htmlFor="published">Published</label>
           <input
