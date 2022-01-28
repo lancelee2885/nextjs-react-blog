@@ -4,6 +4,7 @@ import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import AuthCheck from "../../components/AuthCheck";
+import ImageUploader from '../../components/ImageUploader'
 import { auth, firestore, serverTimestamp } from "../../lib/firebase";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
@@ -85,6 +86,7 @@ function PostForm({ postRef, defaultValues, preview }) {
       )}
 
       <div className={preview ? styles.hidden : styles.controls}>
+        <ImageUploader />
         <textarea name="content" {...register("content")}></textarea>
         <fieldset>
           <label htmlFor="published">Published</label>
