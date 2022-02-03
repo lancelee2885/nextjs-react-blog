@@ -28,7 +28,6 @@ function ImageUploader() {
         100
       ).toFixed(0);
       setProgress(pct);
-      
 
       // get downloadURL after task resolves (note: this is not a native promise, async/await does not work here)
       task
