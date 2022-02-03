@@ -30,9 +30,9 @@ function HeartBtn({ postRef }) {
   }
 
   return heartDoc?.exists() ? (
-    <button onClick={removeHeart}>Unheart</button>
+    <button onClick={removeHeart}>💔 Unheart</button>
   ) : (
-    <button onClick={addHeart}>Heart</button>
+    <button onClick={addHeart}>💗 Heart</button>
   );
 }
 
