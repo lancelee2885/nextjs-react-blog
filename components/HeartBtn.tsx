@@ -7,7 +7,7 @@ import { useDocument } from "react-firebase-hooks/firestore";
  */
 function HeartBtn({ postRef }) {
   // listening to heart subcollection
-  const heartRef = postRef.collections("hearts").doc(auth.currentUser.uid);
+  const heartRef = postRef.collection("hearts").doc(auth.currentUser.uid);
   const [heartDoc] = useDocument(heartRef);
 
   async function addHeart(){
@@ -29,7 +29,7 @@ function HeartBtn({ postRef }) {
     await batch.commit();
   }
 
-  return heartDoc?.exists ? (
+  return heartDoc?.exists() ? (
     <button onClick={removeHeart}>Unheart</button>
   ) : (
     <button onClick={addHeart}>Heart</button>
