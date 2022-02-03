@@ -29,6 +29,9 @@ export const STATE_CHANGED = firebase.storage.TaskEvent.STATE_CHANGED;
 
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
+// tell the server to increment a value without know its current value
+export const increment = firebase.firestore.FieldValue.increment;
+
 /** 
  * Returns a user information with username provided
  * @param username 
