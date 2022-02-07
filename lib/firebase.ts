@@ -16,7 +16,7 @@ if (!firebase.apps.length){
     firebase.initializeApp(firebaseConfig)
 }
 
-export const auth = firebase.auth();
+export const auth: any = firebase.auth();
 export const firestore = firebase.firestore();
 
 // save a timestamp on a document on the server. Doesn't rely on client's machine time.
