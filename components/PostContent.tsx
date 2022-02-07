@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
-import MetaTags from './Metatags';
+import MetaTags from './MetaTags';
 
 // UI component for main post content
 export default function PostContent({ post }) {
