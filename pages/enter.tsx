@@ -127,14 +127,14 @@ function UsernameForm() {
           Choose
         </button>
         </form>
-        <h3>Debug State</h3>
+        {/* <h3>Debug State</h3>
         <div>
           Username: {formData}
           <br />
           Loading: {loading.toString()}
           <br />
           Username Valid: {isValid.toString()}
-        </div>
+        </div> */}
       </section>
     )
   );
