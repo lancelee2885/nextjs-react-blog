@@ -1,4 +1,4 @@
-import { useNavigate, Router } from "react-router-dom";
+import { useRouter } from "next/router";
 import { auth, firestore, googleAuthProvider } from "../lib/firebase";
 import { useContext, useState, useEffect, useCallback } from "react";
 import UserContext from "../lib/context";
@@ -6,16 +6,17 @@ import debounce from 'lodash.debounce';
 
 export default function Enter(props) {
   const { user, username } = useContext(UserContext);
-  // const navigate = useNavigate();
+  
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   function redirectIfUsername(){
-  //     if (username) {
-  //       navigate('/');
-  //     }
-  //   };
-  //   redirectIfUsername()
-  // })
+  useEffect(() => {
+    function rediIfUsername() {
+      if (username){
+        router.push('/');
+      }
+    }
+    rediIfUsername();
+  })
 
   // 1. user signed out <SignInButton />
   // 2. user signed in, but missing username <UsernameForm />
