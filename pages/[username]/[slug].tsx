@@ -1,6 +1,11 @@
 import styles from "../../styles/Post.module.css";
 import Link from "next/link";
-import { firestore, getUserWithUsername, postToJson } from "../../lib/firebase";
+import {
+  auth,
+  firestore,
+  getUserWithUsername,
+  postToJson,
+} from "../../lib/firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import PostContent from "../../components/PostContent";
 import AuthCheck from "../../components/AuthCheck";
@@ -64,8 +69,10 @@ export async function getStaticPaths() {
 export default function Post(props) {
   const postRef = firestore.doc(props.path);
   const [realtimePost] = useDocumentData(postRef);
+  const currUid = auth.currentUser?.uid;
 
   const post = realtimePost || props.post;
+  const postUid = post?.uid;
 
   return (
     <main className={styles.container}>
@@ -88,11 +95,13 @@ export default function Post(props) {
           }
         >
           <HeartBtn postRef={postRef} />
-          <Link href={`/admin/${post.slug}`}>
-            <h3>
-              <button className="btn-blue">Edit</button>
-            </h3>
-          </Link>
+          {currUid == postUid ? (
+            <Link href={`/admin/${post.slug}`}>
+              <h3>
+                <button className="btn-blue">Edit</button>
+              </h3>
+            </Link>
+          ) : null}
         </AuthCheck>
       </aside>
     </main>
