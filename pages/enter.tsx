@@ -1,3 +1,4 @@
+import { useNavigate, Router } from "react-router-dom";
 import { auth, firestore, googleAuthProvider } from "../lib/firebase";
 import { useContext, useState, useEffect, useCallback } from "react";
 import UserContext from "../lib/context";
@@ -5,6 +6,16 @@ import debounce from 'lodash.debounce';
 
 export default function Enter(props) {
   const { user, username } = useContext(UserContext);
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   function redirectIfUsername(){
+  //     if (username) {
+  //       navigate('/');
+  //     }
+  //   };
+  //   redirectIfUsername()
+  // })
 
   // 1. user signed out <SignInButton />
   // 2. user signed in, but missing username <UsernameForm />
@@ -89,7 +100,7 @@ function UsernameForm() {
   const checkUsername = useCallback(
     debounce(async (username) => {
       if (username.length >= 3) {
-        const ref = firestore.doc(`usernames/${username}`);
+        const ref = firestore.doc(`users/${username}`);
         const { exists } = await ref.get();
         console.log('Firestore read executed!');
         setIsValid(!exists);
