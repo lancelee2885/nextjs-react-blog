@@ -96,7 +96,7 @@ function CreateNewPost() {
 
   const slug = encodeURI(kebabCase(title));
 
-  const ref = firestore
+  const ref: any = firestore
     .collection("users")
     .doc(auth.currentUser.uid)
     .collection("posts");

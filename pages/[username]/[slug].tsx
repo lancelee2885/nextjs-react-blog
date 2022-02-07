@@ -67,7 +67,7 @@ export async function getStaticPaths() {
 }
 
 export default function Post(props) {
-  const postRef = firestore.doc(props.path);
+  const postRef: any = firestore.doc(props.path);
   const [realtimePost] = useDocumentData(postRef);
   const currUid = auth.currentUser?.uid;
 
