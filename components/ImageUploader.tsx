@@ -9,7 +9,7 @@ function ImageUploader() {
 
   async function uploadFile(e) {
     // getting the file
-    const file = Array.from(e.target.files)[0];
+    const file: any = Array.from(e.target.files)[0];
     const extension = file.type.split("/")[1];
 
     // makes reference to the storage bucket location
@@ -23,7 +23,7 @@ function ImageUploader() {
 
     // listen to updates to upload taks
     task.on(STATE_CHANGED, (snapshot) => {
-      const pct = (
+      const pct: any = (
         (snapshot.bytesTransferred / snapshot.totalBytes) *
         100
       ).toFixed(0);
