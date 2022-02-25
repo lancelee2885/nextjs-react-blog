@@ -9,7 +9,6 @@ import { auth, firestore, serverTimestamp } from "../../lib/firebase";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
 import toast from "react-hot-toast";
-import Tiptap from "../../components/Tiptap";
 
 function AdminPostEdit() {
   return (
@@ -68,7 +67,7 @@ function PostForm({ postRef, defaultValues, preview }) {
   });
 
   const [content, setContent] = useState();
-
+  
   function getContent(content){
     setContent(content);
   }
