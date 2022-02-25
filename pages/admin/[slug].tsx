@@ -9,6 +9,7 @@ import { auth, firestore, serverTimestamp } from "../../lib/firebase";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
 import toast from "react-hot-toast";
+import Tiptap from "../../components/Tiptap";
 
 function AdminPostEdit() {
   return (
@@ -66,6 +67,12 @@ function PostForm({ postRef, defaultValues, preview }) {
     mode: "onChange",
   });
 
+  const [content, setContent] = useState();
+
+  function getContent(content){
+    setContent(content);
+  }
+
   const { isValid, isDirty, errors } = formState;
 
   async function updatePost({ content, published }) {
@@ -83,7 +90,7 @@ function PostForm({ postRef, defaultValues, preview }) {
     <form onSubmit={handleSubmit(updatePost)}>
       {preview && (
         <div className="card">
-          <ReactMarkdown>{watch("content")}</ReactMarkdown>
+          <Tiptap getContent={getContent}>{watch("content")}</Tiptap>
         </div>
       )}
 

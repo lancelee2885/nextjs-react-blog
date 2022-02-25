@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { auth, firestore, googleAuthProvider } from "../lib/firebase";
+import { auth, emailAuthProvider, firestore, googleAuthProvider } from "../lib/firebase";
 import { useContext, useState, useEffect, useCallback } from "react";
 import UserContext from "../lib/context";
 import debounce from 'lodash.debounce';
@@ -8,7 +8,8 @@ export default function Enter(props) {
   const { user, username } = useContext(UserContext);
   
   const router = useRouter();
-
+  
+  console.log(auth.signInWithEmailAndPassword)
   useEffect(() => {
     function rediIfUsername() {
       if (username){
@@ -17,6 +18,8 @@ export default function Enter(props) {
     }
     rediIfUsername();
   })
+
+  // your code ...
 
   // 1. user signed out <SignInButton />
   // 2. user signed in, but missing username <UsernameForm />
@@ -42,10 +45,20 @@ function SignInButton() {
     await auth.signInWithPopup(googleAuthProvider);
   };
 
+  const signInWithEmail = async (email, password) => {
+    await auth.signInWithEmailAndPassword(email, password)
+  }
+
   return (
+    <>
     <button className="btn-google" onClick={signInWithGoogle}>
       <img src="/google.png" alt="google logo" /> Sign in with Google
     </button>
+    {/* <button className="btn-google" onClick={() => signInWithEmail()}>
+      <img src="/google.png" alt="google logo" /> Sign in with Email
+    </button> */}
+    
+    </>
   );
 }
 
