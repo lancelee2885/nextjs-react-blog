@@ -111,16 +111,18 @@ function Toolbar({ editor }: ToolbarProps) {
                 <div
                     className={styles.icon}
                     onClick={() => editor.chain().focus().toggleBulletList().run()}>
-                    <RiListOrdered />
-                </div>
-                <div
-                    className={styles.icon}
-                    onClick={() => editor.chain().focus().toggleOrderedList().run()}>
                     <RiListUnordered />
                 </div>
                 <div
                     className={styles.icon}
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+                    <RiListOrdered />
+                </div>
+                <div
+                    className={styles.icon}
                     onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+                                                {console.log(editor.chain().focus().toggleCodeBlock().run)}
+
                     <RiCodeBoxLine />
                 </div>
                 <div className={styles.divider}></div>
@@ -128,7 +130,7 @@ function Toolbar({ editor }: ToolbarProps) {
                     <RiLink />
                 </div>
                 <div
-                    className={classNames('icon', { disabled: !isCursorOverLink })}
+                    className={classNames(styles.icon, { disabled: !isCursorOverLink })}
                     onClick={() => setLink(editor)}>
                     <RiLinkUnlink />
                 </div>
