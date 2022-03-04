@@ -57,7 +57,7 @@ function ImageUploader() {
         </>
       )}
       {downloadURL && (
-        <code className="upload-snippet">{`![alt](${downloadURL})`}</code>
+        <code className="upload-snippet">{downloadURL}</code>
       )}
     </div>
   );
