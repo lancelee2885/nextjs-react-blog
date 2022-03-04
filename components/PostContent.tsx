@@ -17,7 +17,10 @@ export default function PostContent({ post }) {
         </Link>{' '}
         on {createdAt.toString()}
       </span>
-      <ReactMarkdown>{post?.content}</ReactMarkdown>
+      <div
+          className="card"
+          dangerouslySetInnerHTML={{ __html: post?.content }}
+        ></div>
     </div>
   );
 }
