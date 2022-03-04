@@ -3,7 +3,7 @@
 Feed is a fullstack bloggin platform where users can currently be authenticated by Google and post blogs in a markdown format. Feed includes technologies such as Next.js server side rendering and incremental static regeneration. Authentication is implemented using Google Firebase authentication. Data is stored in Firebase clould database.
 
 Authentication of this app is achieved with Google firebase SDK. Once logged in, users have access to the following features: 
-- Create a post in markdown format
+- Create a post in WYSIWYG format
 - Edit an exisitng post
 - like/heart a post written by other users
 
