@@ -4,11 +4,12 @@ import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import AuthCheck from "../../components/AuthCheck";
-import ImageUploader from '../../components/ImageUploader'
+import ImageUploader from "../../components/ImageUploader";
 import { auth, firestore, serverTimestamp } from "../../lib/firebase";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
 import toast from "react-hot-toast";
+import { Tiptap } from "../../components/Tiptap";
 
 function AdminPostEdit() {
   return (
@@ -22,7 +23,7 @@ function AdminPostEdit() {
 function PostManager() {
   const [preview, setPreview] = useState(false);
   const router = useRouter();
-  const { slug }:any = router.query;
+  const { slug }: any = router.query;
 
   const postRef: any = firestore
     .collection("users")
@@ -61,18 +62,18 @@ function PostManager() {
 }
 
 function PostForm({ postRef, defaultValues, preview }) {
-  const { register, handleSubmit, reset, watch, formState } = useForm({
+  const { register, handleSubmit, reset, watch, formState, control } = useForm({
     defaultValues,
     mode: "onChange",
   });
 
-  const [content, setContent] = useState();
-  
-  function getContent(content){
-    setContent(content);
-  }
-
   const { isValid, isDirty, errors } = formState;
+
+  // const [content, setContent] = useState();
+
+  // function sendContent(content) {
+  //   setContent(content);
+  // }
 
   async function updatePost({ content, published }) {
     await postRef.update({
@@ -88,14 +89,33 @@ function PostForm({ postRef, defaultValues, preview }) {
   return (
     <form onSubmit={handleSubmit(updatePost)}>
       {preview && (
-        <div className="card">
-          <Tiptap getContent={getContent}>{watch("content")}</Tiptap>
-        </div>
+        // <div className="card">
+        //   <ReactMarkdown>{watch("content")}</ReactMarkdown>
+        // </div>
+        <div
+          className="card"
+          dangerouslySetInnerHTML={{ __html: watch("content") }}
+        ></div>
       )}
 
       <div className={preview ? styles.hidden : styles.controls}>
         <ImageUploader />
-        <textarea name="content" {...register("content")}></textarea>
+        {/* <textarea name="content" {...register("content")}></textarea> */}
+        <Controller
+          render={({ field: { onChange } }) => (
+            <Tiptap
+              withToolbar={true}
+              withTaskListExtension={true}
+              withLinkExtension={true}
+              // sendContent={sendContent}
+              onChange={onChange}
+              content={defaultValues.content}
+            />
+          )}
+          name="content"
+          control={control}
+          {...register("content")}
+        />
         <fieldset>
           <label htmlFor="published">Published</label>
           <input
@@ -107,7 +127,11 @@ function PostForm({ postRef, defaultValues, preview }) {
           />
         </fieldset>
 
-        <button type="submit" className="btn-greem" disabled={!isDirty || !isValid}>
+        <button
+          type="submit"
+          className="btn-green"
+          disabled={!isDirty || !isValid}
+        >
           Save Changes
         </button>
       </div>

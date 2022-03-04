@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function Editor() {
   const [content, setContent] = useState();
 
-  function getContent(content) {
+  function sendContent(content) {
     setContent(content);
   }
 
@@ -14,8 +14,9 @@ export default function Editor() {
         withToolbar={true}
         withTaskListExtension={true}
         withLinkExtension={true}
+        sendContent={sendContent}
       />
-      <div dangerouslySetInnerHTML={{ __html: content }}></div>
+      {content}
     </>
   );
 }
