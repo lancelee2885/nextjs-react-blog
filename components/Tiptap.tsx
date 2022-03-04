@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Image from '@tiptap/extension-image'
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
@@ -9,7 +10,7 @@ import lowlight from 'lowlight';
 
 import type { Extensions } from "@tiptap/react";
 
-import { formatHtml } from "../helps/formatHtml";
+// import { formatHtml } from "../helps/formatHtml";
 
 import { Toolbar } from "./Toolbar";
 
@@ -35,16 +36,18 @@ import "../styles/Tiptap.module.scss";
 function Tiptap({
   content = "",
   editable = true,
-  placeholder = "Type '/' for actions…",
+  // placeholder = "Type '/' for actions…",
   withToolbar = false,
   withLinkExtension = false,
   withTaskListExtension = false,
   withCodeBlockLowlightExtension = false,
+  onChange
 }) {
   const extensions: Extensions = [
     StarterKit.configure({
       ...(withCodeBlockLowlightExtension && { codeBlock: false }),
     }),
+    Image
   ];
 
   if (withLinkExtension) {
@@ -68,14 +71,15 @@ function Tiptap({
     extensions.push(TaskList, TaskItem);
   }
 
-  const [editorHtmlContent, setEditorHtmlContent] = useState(content.trim());
+  // const [editorHtmlContent, setEditorHtmlContent] = useState(content.trim()); Debugging state
 
   const editor = useEditor({
     content,
     extensions,
     editable,
     onUpdate: ({ editor }) => {
-      setEditorHtmlContent(editor.getHTML());
+      // setEditorHtmlContent(editor.getHTML());
+      onChange(editor.getHTML())
     },
   });
 
@@ -89,14 +93,14 @@ function Tiptap({
         {withToolbar ? <Toolbar editor={editor} /> : null}
         <EditorContent editor={editor} />
       </div>
-      <h2>Text (tiptap)</h2>
+      {/* <h2>Text (tiptap)</h2>  <-- Debugging states
       <div className="WhiteCard">
         <pre>{editor.getText()}</pre>
       </div>
       <h2>HTML Output</h2>
       <div className="WhiteCard">
         <pre>{formatHtml(editorHtmlContent)}</pre>
-      </div>
+      </div> */}
     </>
   );
 }
