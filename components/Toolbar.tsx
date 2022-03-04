@@ -87,20 +87,6 @@ function Toolbar({ editor }: ToolbarProps) {
           <RiCodeSSlashLine />
         </div>
         <div className={styles.divider}></div>
-        <div
-          className={styles.icon}
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .insertEmoji(
-                sample(["😀", "😁", "😂", "😎", "😍", "😱"]) as string
-              )
-              .run()
-          }
-        >
-          <RiEmotionLine />
-        </div>
         <div className={styles.divider}></div>
         <div
           className={styles.icon}
