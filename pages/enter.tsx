@@ -1,25 +1,40 @@
 import { useRouter } from "next/router";
-import { auth, emailAuthProvider, firestore, googleAuthProvider } from "../lib/firebase";
+import {
+  auth,
+  emailAuthProvider,
+  firestore,
+  googleAuthProvider,
+} from "../lib/firebase";
 import { useContext, useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import UserContext from "../lib/context";
-import debounce from 'lodash.debounce';
+import debounce from "lodash.debounce";
+
 
 export default function Enter(props) {
   const { user, username } = useContext(UserContext);
+  const [authInfo, setAuthInfo] = useState({username: '', password: ''})
   
+  function handleChange(e) {
+    e.preventDefault();
+    const fieldValue = e.target.value;
+    const fieldName = e.target.name;
+    setAuthInfo(authInfo => ({
+      ...authInfo,
+      [fieldName]: fieldValue,
+    }))
+  }
+
   const router = useRouter();
-  
-  console.log(auth.signInWithEmailAndPassword)
+
   useEffect(() => {
     function rediIfUsername() {
-      if (username){
-        router.push('/');
+      if (username) {
+        router.push("/");
       }
     }
     rediIfUsername();
-  })
-
-  // your code ...
+  });
 
   // 1. user signed out <SignInButton />
   // 2. user signed in, but missing username <UsernameForm />
@@ -33,31 +48,40 @@ export default function Enter(props) {
           <SignOutButton />
         )
       ) : (
-        <SignInButton />
+        <>
+          <form>
+            <label htmlFor="username">Username </label>
+            <input type="email" name='username' onChange={handleChange}/>
+            <label htmlFor="password">Password: </label>
+            <input type="password" name='password' onChange={handleChange}/>
+          </form>
+          <SignInButton email={authInfo.username} password={authInfo.password}/>
+        </>
       )}
     </main>
   );
 }
 
 // Sign in with Google button
-function SignInButton() {
+function SignInButton({email, password}) {
   const signInWithGoogle = async () => {
     await auth.signInWithPopup(googleAuthProvider);
   };
 
   const signInWithEmail = async (email, password) => {
-    await auth.signInWithEmailAndPassword(email, password)
-  }
-
+    await auth.signInWithEmailAndPassword(email, password);
+  };
+  
   return (
     <>
-    <button className="btn-google" onClick={signInWithGoogle}>
-      <img src="/google.png" alt="google logo" /> Sign in with Google
-    </button>
-    {/* <button className="btn-google" onClick={() => signInWithEmail()}>
-      <img src="/google.png" alt="google logo" /> Sign in with Email
-    </button> */}
-    
+      {/* eslint-disable-next-line react/no-unescaped-entities */}
+      <p>Don't have an account? <Link href='/signup'>Sign up</Link> now</p>
+      <button type='submit' className="btn-google" onClick={() => signInWithEmail(email, password)}>
+        Sign in with Email
+      </button>
+      <button className="btn-google" onClick={signInWithGoogle}>
+        <img src="/google.png" alt="google logo" /> Sign in with Google
+      </button>
     </>
   );
 }
@@ -76,7 +100,7 @@ function UsernameForm() {
 
   useEffect(() => {
     checkUsername(formData);
-  }, [formData])
+  }, [formData]);
 
   function handleChange(evt) {
     const val = evt.target.value.toLowerCase();
@@ -104,11 +128,14 @@ function UsernameForm() {
 
     // Batch both of them at the same time. Either both success or faile
     const batch = firestore.batch();
-    batch.set(userDoc, { username: formData, photoURL: user.photoURL, displayName: user.displayName});
+    batch.set(userDoc, {
+      username: formData,
+      photoURL: user.photoURL,
+      displayName: user.displayName,
+    });
     batch.set(usernameDoc, { uid: user.uid });
 
     await batch.commit();
-
   }
 
   const checkUsername = useCallback(
@@ -116,7 +143,7 @@ function UsernameForm() {
       if (username.length >= 3) {
         const ref = firestore.doc(`usernames/${username}`);
         const { exists } = await ref.get();
-        console.log('Firestore read executed!');
+        console.log("Firestore read executed!");
         setIsValid(!exists);
         setLoading(false);
       }
@@ -124,15 +151,17 @@ function UsernameForm() {
     []
   );
 
-  function UsernameMessage({ username, isValid, loading }){
+  function UsernameMessage({ username, isValid, loading }) {
     if (loading) {
-      return <p>Checking...</p>
+      return <p>Checking...</p>;
     } else if (isValid) {
-      return <p className='text-success'>Username {username} is available!</p>
+      return <p className="text-success">Username {username} is available!</p>;
     } else if (username && !isValid) {
-      return <p className='text-danger'> Username {username} is not available!</p>
+      return (
+        <p className="text-danger"> Username {username} is not available!</p>
+      );
     } else {
-      return <p></p>
+      return <p></p>;
     }
   }
 
@@ -141,16 +170,20 @@ function UsernameForm() {
       <section>
         <h3>Choose Username</h3>
         <form onSubmit={(evt) => handleSubmit(evt)}>
-          <UsernameMessage username={formData} isValid={isValid} loading={loading}/>
+          <UsernameMessage
+            username={formData}
+            isValid={isValid}
+            loading={loading}
+          />
           <input
             type="username"
             placeholder="username"
             value={formData}
             onChange={handleChange}
           />
-        <button type="submit" className="btn-grenn" disabled={!isValid}>
-          Choose
-        </button>
+          <button type="submit" className="btn-grenn" disabled={!isValid}>
+            Choose
+          </button>
         </form>
         {/* <h3>Debug State</h3>
         <div>
