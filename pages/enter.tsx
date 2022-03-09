@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import {
   auth,
-  emailAuthProvider,
   firestore,
   googleAuthProvider,
 } from "../lib/firebase";
