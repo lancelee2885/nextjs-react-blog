@@ -1,0 +1,23 @@
+.signinSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+
+  button {
+    margin: 0.5rem 1rem 0.5rem 1rem;
+  }
+}
+
+.authInput {
+  max-width: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  gap: 10px;
+  outline: auto;
+  padding: 20px;
+}
