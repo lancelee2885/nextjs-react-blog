@@ -1,28 +1,35 @@
 import { useRouter } from "next/router";
-import {
-  auth,
-  firestore,
-  googleAuthProvider,
-} from "../lib/firebase";
+import { auth, firestore, googleAuthProvider } from "../lib/firebase";
 import { useContext, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import UserContext from "../lib/context";
 import debounce from "lodash.debounce";
-
+import toast from "react-hot-toast";
+import styles from "../styles/Enter.module.scss";
 
 export default function Enter(props) {
   const { user, username } = useContext(UserContext);
-  const [authInfo, setAuthInfo] = useState({username: '', password: ''})
-  
+  const [authInfo, setAuthInfo] = useState({ username: "", password: "" });
+  const [errMsg, setErrMsg] = useState(null);
+
   function handleChange(e) {
     e.preventDefault();
     const fieldValue = e.target.value;
     const fieldName = e.target.name;
-    setAuthInfo(authInfo => ({
+    setAuthInfo((authInfo) => ({
       ...authInfo,
       [fieldName]: fieldValue,
-    }))
+    }));
   }
+
+  const signInWithEmail = async (e, email, password) => {
+    e.preventDefault();
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+    } catch (err) {
+      toast.error("Email or password does not match");
+    }
+  };
 
   const router = useRouter();
 
@@ -39,7 +46,7 @@ export default function Enter(props) {
   // 2. user signed in, but missing username <UsernameForm />
   // 3. user signed in, has username <SignOutButton />
   return (
-    <main>
+    <main className={styles.signinSection}>
       {user ? (
         !username ? (
           <UsernameForm />
@@ -48,13 +55,31 @@ export default function Enter(props) {
         )
       ) : (
         <>
-          <form>
-            <label htmlFor="username">Username </label>
-            <input type="email" name='username' onChange={handleChange}/>
+          <form className={styles.authInput}>
+            <label htmlFor="username">Username: </label>
+            <input type="email" name="username" onChange={handleChange} />
             <label htmlFor="password">Password: </label>
-            <input type="password" name='password' onChange={handleChange}/>
+            <input type="password" name="password" onChange={handleChange} />
+              <button
+                type="submit"
+                onClick={(e) =>
+                  signInWithEmail(e, authInfo.username, authInfo.password)
+                }
+              >
+                Sign in
+              </button>
+
+            <small>
+              <p>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                Don't have an account? <Link href="/signup"><b>Sign up</b></Link> now
+              </p>
+            </small>
           </form>
-          <SignInButton email={authInfo.username} password={authInfo.password}/>
+          <SignInButton
+            email={authInfo.username}
+            password={authInfo.password}
+          />
         </>
       )}
     </main>
@@ -62,22 +87,15 @@ export default function Enter(props) {
 }
 
 // Sign in with Google button
-function SignInButton({email, password}) {
+function SignInButton({ email, password }) {
   const signInWithGoogle = async () => {
     await auth.signInWithPopup(googleAuthProvider);
   };
 
-  const signInWithEmail = async (email, password) => {
-    await auth.signInWithEmailAndPassword(email, password);
-  };
-  
   return (
     <>
-      {/* eslint-disable-next-line react/no-unescaped-entities */}
-      <p>Don't have an account? <Link href='/signup'>Sign up</Link> now</p>
-      <button type='submit' className="btn-google" onClick={() => signInWithEmail(email, password)}>
-        Sign in with Email
-      </button>
+      <hr />
+      <p>Other methods:</p>
       <button className="btn-google" onClick={signInWithGoogle}>
         <img src="/google.png" alt="google logo" /> Sign in with Google
       </button>
